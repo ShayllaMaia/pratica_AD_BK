@@ -1,31 +1,63 @@
+/*
 const http = require('http')
-const fs = require('fs') //objeto q permite chegar nos objetos do módulo
+const fs = require('fs')
+const path = require('path')
+const { fileURLToPath } = require('url')
+
+http.createServer((req,res)=>{
+    const file = (req.url === '/') ? 'index.html'  //tem o conteudo do css e js
+    : req.url
+    
+    //dinamico, deixa chegar em qualquer coisa 
+    const pathFile = path.join(__dirname,'public', file) //pega o caminho
+
+    //aceita 3 extensões (html, css e js), qualquer coisa diferente disso só deixa passar
+    const extname = path.extname(pathFile)
+    const permitidos = ['.html', '.css', '.js']
+    //buscar no vetor se a extensao que ta na requisição é uma das três, se n for faz rotina de bloquear a aplicação
+    const aceitos = permitidos.find( item => { item === extname }) //procurar dentro do vetor alguém
+    if(!aceitos) return
+
+    fs.readFile(pathFile, (err,content)=>{ //lê esse caminho
+        if(err) throw err
+
+        res.end(content)
+    })
+	
+    /*if(req.url === '/')
+    //não tem os conteudos do css e etc, era somente estático
+        fs.readFile(path.join(__dirname,'public','index.html'), (err,content)=>{
+            if(err) throw err
+
+            res.end(content)
+        })
+        
+}).listen(3000,()=>{
+    console.log('Testando...')
+})
+*/
+
+const http = require('http')
+const fs = require('fs')
 const path = require('path')
 
-http.createServer((req, res) => {
-    //req são as requisições
-	//res.write('Olá, mundo!')
-    //joga para o front dizendo q o servidor ta ok
-	//res.end('Ola, mundo!') //também joga conteúdo na tela mas não é tão funcional, end significa que chegou no final da criação
+http.createServer((req,res)=>{
+	
+    const file = (req.url === '/') ? 'index.html' : req.url
+    const pathFile = path.join(__dirname,'public',file)
 
-    //console.log(res) //joga o objeto res no servidor e mostra a documentação do res
+    const extname = path.extname(pathFile)
+    const allowedFileTypes = ['.html','.css','.js']
+    const allowed = allowedFileTypes.find(item => item == extname)
+    if(!allowed) return
 
-    //definição de rotas padrão
-    /*if(req.url === '/')
-        return res.end('<h1>Página inicial</h1>')
-    if(req.url === '/contato')
-        return res.end('Página de contatos') //se tivesse o módulo fs tinha-se as rotas de páginas
-	*/
+    fs.readFile(pathFile , (err,content)=>{
+        if(err) throw err
 
-    //servir o documento em html
-    if(req.url === '/')
-        fs.readFile(path.join(__dirname, 'public', 'index.html'), //ler o arquivo
-        (err, conteudo) => { //passa o caminho e uma callback que trata o erro e configura o documento q vai ser lido
-            if(err) throw err //tratamento do erro
-            res.end(conteudo) //pega todo o texto de index e copia para o servir a pagina
+        res.end(content)
+    })
 
-        }) 
-
-}).listen(5000, () => {
-    console.log("Servidor rodando") //leva para o backend dizendo q o servidor ta ok
+    
+}).listen(5000,()=>{
+    console.log('Servidor rodando...')
 })

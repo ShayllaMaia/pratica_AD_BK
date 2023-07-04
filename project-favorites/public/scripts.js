@@ -18,6 +18,7 @@ async function load() {
 load()
 */
 
+
 function addElement({ name, url }) {
     const li = document.createElement('li');
     li.innerHTML = 
@@ -42,23 +43,22 @@ function removeElement(element) {
 }
 
 
-
-
 form.addEventListener('submit', (event) => {
     
-    event.preventDefault();
+    event.preventDefault(); //campo para padrão
 
     let { value } = input
 
     if (!value)
-        return alert('Preencha o campo!')
+        return alert('Preencha o campo!') //quando n tem nada manda preencher
 
-    const [name, url] = value.split(',')
+    const [name, url] = value.split(',') 
 
-    if (!url)
+    if (!url) //verifica se é um contúdo válido
         return alert('O texto não está formatado da maneira correta.')
 
-    if (!/^http/.test(url))
+    //exp. regular
+    if (!/^http/.test(url)) //verifica se a url começa com http
         return alert('Digite a url da maneira correta.')
 
     addElement({ name, url })
