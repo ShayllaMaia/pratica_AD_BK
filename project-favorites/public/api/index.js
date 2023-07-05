@@ -1,11 +1,13 @@
+//modulos para sevrir o servidor, trablhar com url e arquivos
 const http = require('http')
-const data = require('./urls.json')
+const data = require('./urls.json') //guarda no objeto data e joga no documento
 const URL = require('url')
 const fs = require('fs')
 const path = require('path')
 
+
 http.createServer((req,res) => {
-    
+    //desestruturação 
     const {name, url, del } = URL.parse(req.url, true).query
 
     function writeFile(cb){
@@ -18,21 +20,21 @@ http.createServer((req,res) => {
             }
         )
     }
-
-
+    //configuração de rotas
+    //se nome é falso e url tbm, vai entrar nesse if e vai mostrar os dados na tela
     if(!name || !url){
-        return res.end(JSON.stringify(data))
+        return res.end(JSON.stringify(data)) //esse data está dentro do documento
     }
     if(del){
         data.urls = data.urls.filter(item => item.url != url)
         return writeFile(message => res.end(message))
     }
 
+    //guarda no objeto data e joga no documento
     data.urls.push({name, url})
     return writeFile(message => res.end(message))
-    //console.log(URL.parse(req.url, true).query)
 
 }).listen(3000, () => console.log('API rodando...'))
 
 
-//como chamar quando finalizar:http://localhost:3000/?name=teste&url=http&del=1, um de cada vez
+//como chamar quando finalizar: http://localhost:3000/?name=teste&url=http&del=1, um de cada vez
