@@ -2,7 +2,7 @@ const ul = document.querySelector('ul')
 const input = document.querySelector('input')
 const form = document.querySelector('form')
 
-/*
+
 
 // Não se preocupem com esse pedaço de código comentado! Vamos descomentá-lo quando tivermos acabado de construir a API.
 
@@ -16,10 +16,10 @@ async function load() {
 }
 
 load()
-*/
 
 
 function addElement({ name, url }) {
+    fetch('http://localhost:')
     const li = document.createElement('li');
     li.innerHTML = 
     `
@@ -32,6 +32,14 @@ function addElement({ name, url }) {
     });
     
     ul.appendChild(li);
+
+    try{
+        fetch(`http://localhost:3000/?name=${name}&url=${url}`,
+        {method:'POST'})
+        return
+    }catch(error){
+        console.log('erro na requisição')
+    }
 }
 
 
@@ -40,7 +48,13 @@ function removeElement(element) {
     if (confirmar){
         element.remove();
     }
+    
+        fetch(`http://localhost:3000/?${element}&del=1`,
+        {method:'DELETE'})
+        return
 }
+
+
 
 
 form.addEventListener('submit', (event) => {

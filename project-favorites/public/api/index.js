@@ -10,6 +10,12 @@ http.createServer((req,res) => {
     //desestruturação 
     const {name, url, del } = URL.parse(req.url, true).query
 
+    res.writeHead(200, {
+        'Access-Control-Allow-Origin': '*'
+    })
+
+    //fetch('http://localhost:3000').then(data => data.json()).then(data => console.log(data))
+
     function writeFile(cb){
         fs.writeFile(
             path.join(__dirname, 'urls.json'),
@@ -38,3 +44,4 @@ http.createServer((req,res) => {
 
 
 //como chamar quando finalizar: http://localhost:3000/?name=teste&url=http&del=1, um de cada vez
+
