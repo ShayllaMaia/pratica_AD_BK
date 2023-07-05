@@ -4,21 +4,22 @@ const URL = require('url')
 const fs = require('fs')
 const path = require('path')
 
-
-function writeFile(cb){
-    fs.writeFile(
-        path.join(__dirname, 'urls.json'),
-        JSON.stringify(data, null, 2),
-        err => {
-            if (err) throw err
-            cb('Operação realizada com sucesso!')
-        }
-    )
-}
-
 http.createServer((req,res) => {
     
     const {name, url, del } = URL.parse(req.url, true).query
+
+    function writeFile(cb){
+        fs.writeFile(
+            path.join(__dirname, 'urls.json'),
+            JSON.stringify(data, null, 2),
+            err => {
+                if (err) throw err
+                cb('Operação realizada com sucesso!')
+            }
+        )
+    }
+
+
     if(!name || !url){
         return res.end(JSON.stringify(data))
     }
