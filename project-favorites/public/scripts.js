@@ -3,7 +3,6 @@ const input = document.querySelector('input')
 const form = document.querySelector('form')
 
 
-
 // Não se preocupem com esse pedaço de código comentado! Vamos descomentá-lo quando tivermos acabado de construir a API.
 
 // Função que carrega o conteúdo da API.
@@ -17,12 +16,9 @@ async function load() {
 
 load()
 
-
 function addElement({ name, url }) {
-    fetch('http://localhost:')
     const li = document.createElement('li');
-    li.innerHTML = 
-    `
+    li.innerHTML = `
         <a href="${url}" target="_blank">${name}</a>
         <button id="remover">Remover</button>
     `;
@@ -30,31 +26,40 @@ function addElement({ name, url }) {
     li.querySelector('button').addEventListener('click', () => {
         removeElement(li);
     });
-    
+
     ul.appendChild(li);
 
-    try{
-        fetch(`http://localhost:3000/?name=${name}&url=${url}`,
-        {method:'POST'})
-        return
-    }catch(error){
-        console.log('erro na requisição')
+    try {
+        const params = new URLSearchParams();
+        params.append('name', name);
+        params.append('url', url);
+
+        fetch(`http://localhost:3000/?${params.toString()}`, { method: 'POST' });
+    } catch (error) {
+        console.log('erro na requisição');
     }
 }
-
 
 function removeElement(element) {
-    const confirmar = confirm("Deseja realmente remover esse link?")
-    if (confirmar){
+    const confirmar = confirm("Deseja realmente remover esse link?");
+    if (confirmar) {
         element.remove();
+
+        const name = element.querySelector('a').innerText;
+        const url = element.querySelector('a').getAttribute('href');
+
+        try {
+            const params = new URLSearchParams();
+            params.append('name', name);
+            params.append('url', url);
+            params.append('del', '1');
+
+            fetch(`http://localhost:3000/?${params.toString()}`, { method: 'DELETE' });
+        } catch (error) {
+            console.log('erro na requisição');
+        }
     }
-    
-        fetch(`http://localhost:3000/?${element}&del=1`,
-        {method:'DELETE'})
-        return
 }
-
-
 
 
 form.addEventListener('submit', (event) => {
@@ -80,3 +85,4 @@ form.addEventListener('submit', (event) => {
     input.value = ''
 
 })
+

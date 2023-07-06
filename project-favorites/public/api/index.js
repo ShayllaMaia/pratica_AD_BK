@@ -1,4 +1,4 @@
-//modulos para sevrir o servidor, trablhar com url e arquivos
+//modulos para sevir o servidor, trabalhar com url e arquivos
 const http = require('http')
 const data = require('./urls.json') //guarda no objeto data e joga no documento
 const URL = require('url')
@@ -13,8 +13,6 @@ http.createServer((req,res) => {
     res.writeHead(200, {
         'Access-Control-Allow-Origin': '*'
     })
-
-    //fetch('http://localhost:3000').then(data => data.json()).then(data => console.log(data))
 
     function writeFile(cb){
         fs.writeFile(
