@@ -16,6 +16,7 @@ async function load() {
 
 load()
 
+
 function addElement({ name, url }) {
     const li = document.createElement('li');
     li.innerHTML = `
@@ -25,7 +26,9 @@ function addElement({ name, url }) {
 
     li.querySelector('button').addEventListener('click', () => {
         removeElement(li);
+
     });
+
 
     ul.appendChild(li);
 
@@ -39,6 +42,7 @@ function addElement({ name, url }) {
         console.log('erro na requisição');
     }
 }
+
 
 function removeElement(element) {
     const confirmar = confirm("Deseja realmente remover esse link?");
@@ -59,6 +63,19 @@ function removeElement(element) {
             console.log('erro na requisição');
         }
     }
+}
+
+// fazer rotina para para editar, excluir e cadastrar
+//clica faz a remoção do json, edita e dps adiciona dnv
+async function update({ name, url }){
+
+    const response = await fetch(`http://localhost:3000/?name=${name}&url=${url}`,{
+        method:'PUT'
+    })
+
+    if (!response.ok)
+        console.error(`Erro`)
+
 }
 
 
