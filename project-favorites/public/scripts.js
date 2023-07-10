@@ -1,105 +1,113 @@
-const ul = document.querySelector('ul')
-const input = document.querySelector('input')
-const form = document.querySelector('form')
-
-
-// Não se preocupem com esse pedaço de código comentado! Vamos descomentá-lo quando tivermos acabado de construir a API.
+const ul = document.querySelector('ul');
+const input = document.querySelector('input');
+const form = document.querySelector('form');
 
 // Função que carrega o conteúdo da API.
 async function load() {
-    // fetch está como await para evitar que entre num esquema de promisse e só devolva o conteúdo após a iteração qua acontece em seguida.
-    const res = await fetch('http://localhost:3000/')
-        .then(data => data.json())
-    // Iterando no vetor com o conteúdo (JSON) que está vindo da API e adicionando-os no frontend.
-    res.urls.map(({name, url}) => addElement({name, url}))
+  const res = await fetch('http://localhost:3000/').then((data) => data.json());
+  res.urls.map(({ name, url }) => addElement({ name, url }));
 }
 
-load()
-
+load();
 
 function addElement({ name, url }) {
-    const li = document.createElement('li');
-    li.innerHTML = `
-        <a href="${url}" target="_blank">${name}</a>
-        <button id="remover">Remover</button>
-    `;
+  const li = document.createElement('li');
+  li.innerHTML = `
+    <a href="${url}" target="_blank">${name}</a>
+    <button class="editar">Editar</button>
+    <button class="remover">Remover</button>
+  `;
 
-    li.querySelector('button').addEventListener('click', () => {
-        removeElement(li);
+  li.querySelector('.remover').addEventListener('click', () => {
+    removeElement(li);
+  });
 
-    });
+  li.querySelector('.editar').addEventListener('click', () => {
+    editElement(li);
+  });
 
+  ul.appendChild(li);
+}
 
-    ul.appendChild(li);
+async function addElementAndSendToApi({ name, url }) {
+  addElement({ name, url });
 
-    try {
-        const params = new URLSearchParams();
-        params.append('name', name);
-        params.append('url', url);
+  const response = await fetch(`http://localhost:3000/?name=${name}&url=${url}`);
 
-        fetch(`http://localhost:3000/?${params.toString()}`, { method: 'POST' });
-    } catch (error) {
-        console.log('erro na requisição');
-    }
+  if (!response.ok) console.error(`Erro ao enviar os dados para a API: ${response.statusText}`);
 }
 
 
-function removeElement(element) {
-    const confirmar = confirm("Deseja realmente remover esse link?");
+async function editElement(element) {
+    const name = element.querySelector('a').innerText;
+    const url = element.querySelector('a').getAttribute('href');
+  
+    const newName = prompt('Digite o novo nome:', name);
+    const newUrl = prompt('Digite a nova URL:', url);
+  
+    if (newName && newUrl) {
+      element.querySelector('a').innerText = newName;
+      element.querySelector('a').setAttribute('href', newUrl);
+  
+      removeElementFromApi(name, url); // Remove o elemento antigo da API
+      addElementAndSendToApi({ name: newName, url: newUrl }); // Adiciona o elemento atualizado na API
+    }
+  }
+
+  async function removeElement(element) {
+    const confirmar = confirm('Deseja realmente remover esse link?');
     if (confirmar) {
-        element.remove();
-
-        const name = element.querySelector('a').innerText;
-        const url = element.querySelector('a').getAttribute('href');
-
-        try {
-            const params = new URLSearchParams();
-            params.append('name', name);
-            params.append('url', url);
-            params.append('del', '1');
-
-            fetch(`http://localhost:3000/?${params.toString()}`, { method: 'DELETE' });
-        } catch (error) {
-            console.log('erro na requisição');
-        }
+      element.remove();
+  
+      const name = element.querySelector('a').innerText;
+      const url = element.querySelector('a').getAttribute('href');
+  
+      removeElementFromApi(name, url);
     }
+  }
+  
+  async function removeElementFromApi(name, url) {
+    try {
+      const params = new URLSearchParams();
+      params.append('name', name);
+      params.append('url', url);
+      params.append('del', '1');
+  
+      await fetch(`http://localhost:3000/?${params.toString()}`, { method: 'DELETE' });
+    } catch (error) {
+      console.log('Erro na requisição:', error);
+    }
+  }
+  
+
+async function update({ name, url, newName, newUrl }) {
+  const params = new URLSearchParams();
+  params.append('name', name);
+  params.append('url', url);
+  params.append('newName', newName);
+  params.append('newUrl', newUrl);
+
+  const response = await fetch(`http://localhost:3000/?${params.toString()}`, {
+    method: 'PUT',
+  });
+
+  if (!response.ok) console.error(`Erro`);
 }
-
-// fazer rotina para para editar, excluir e cadastrar
-//clica faz a remoção do json, edita e dps adiciona dnv
-async function update({ name, url }){
-
-    const response = await fetch(`http://localhost:3000/?name=${name}&url=${url}`,{
-        method:'PUT'
-    })
-
-    if (!response.ok)
-        console.error(`Erro`)
-
-}
-
 
 form.addEventListener('submit', (event) => {
-    
-    event.preventDefault(); //campo para padrão
+  event.preventDefault();
 
-    let { value } = input
+  let { value } = input;
 
-    if (!value)
-        return alert('Preencha o campo!') //quando n tem nada manda preencher
+  if (!value) return alert('Preencha o campo!');
 
-    const [name, url] = value.split(',') 
+  const [name, url] = value.split(',');
 
-    if (!url) //verifica se é um contúdo válido
-        return alert('O texto não está formatado da maneira correta.')
+  if (!url) return alert('O texto não está formatado da maneira correta.');
 
-    //exp. regular
-    if (!/^http/.test(url)) //verifica se a url começa com http
-        return alert('Digite a url da maneira correta.')
+  if (!/^http/.test(url)) return alert('Digite a URL da maneira correta.');
 
-    addElement({ name, url })
+  addElementAndSendToApi({ name, url });
 
-    input.value = ''
-
-})
-
+  input.value = '';
+});

@@ -48,8 +48,12 @@ body {
     float: right;
   }
 
-  button#remover{
+  button.remover{
     background-color: brown;
+    margin-left: auto;
+  }
+
+  button.editar{
     margin-left: auto;
   }
   
