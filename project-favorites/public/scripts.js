@@ -23,7 +23,7 @@ function addElement({ name, url }) {
   });
 
   li.querySelector('.editar').addEventListener('click', () => {
-    editElement(li);
+    updateElement(li);
   });
 
   ul.appendChild(li);
@@ -38,7 +38,7 @@ async function addElementAndSendToApi({ name, url }) {
 }
 
 
-async function editElement(element) {
+async function updateElement(element) {
     const name = element.querySelector('a').innerText;
     const url = element.querySelector('a').getAttribute('href');
   
@@ -78,21 +78,6 @@ async function editElement(element) {
       console.log('Erro na requisição:', error);
     }
   }
-  
-
-async function update({ name, url, newName, newUrl }) {
-  const params = new URLSearchParams();
-  params.append('name', name);
-  params.append('url', url);
-  params.append('newName', newName);
-  params.append('newUrl', newUrl);
-
-  const response = await fetch(`http://localhost:3000/?${params.toString()}`, {
-    method: 'PUT',
-  });
-
-  if (!response.ok) console.error(`Erro`);
-}
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
