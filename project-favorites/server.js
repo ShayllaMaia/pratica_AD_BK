@@ -1,38 +1,63 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const app = express()
-require('dotenv').config()
+/*
+const http = require('http')
+const fs = require('fs')
+const path = require('path')
+const { fileURLToPath } = require('url')
 
-//ler o JSON no express
-app.use(
-    express.urlencoded({
-        extended: true,
-    }),
-)
+http.createServer((req,res)=>{
+    const file = (req.url === '/') ? 'index.html'  //tem o conteudo do css e js
+    : req.url
+    
+    //dinamico, deixa chegar em qualquer coisa 
+    const pathFile = path.join(__dirname,'public', file) //pega o caminho
 
-app.use(express.json())
+    //aceita 3 extensões (html, css e js), qualquer coisa diferente disso só deixa passar
+    const extname = path.extname(pathFile)
+    const permitidos = ['.html', '.css', '.js']
+    //buscar no vetor se a extensao que ta na requisição é uma das três, se n for faz rotina de bloquear a aplicação
+    const aceitos = permitidos.find( item => { item === extname }) //procurar dentro do vetor alguém
+    if(!aceitos) return
 
-//rotas da API
-const personroutes = require('./routes/Personroutes')
-app.use('/person', personroutes)
+    fs.readFile(pathFile, (err,content)=>{ //lê esse caminho
+        if(err) throw err
 
-
-//endpoint inicial para ser acessado no postman
-app.get('/', (req, res) => {
-    //tornar rota funcional
-    res.json({message: 'Oi express!'})
-
-}) 
-
-//disponibilização da porta
-const DB_USER = process.env.DB_USER
-const DB_PSSWD = encodeURIComponent(process.env.DB_PSSWD)
-mongoose
-    .connect(
-        `mongodb+srv://${DB_USER}:${DB_PSSWD}@cluster1.qoi1vhq.mongodb.net/bancodaapi?retryWrites=true&w=majority`
-    )
-    .then(() => {
-        console.log("Conectamos ao MongoDB!")
-        app.listen(3000) 
+        res.end(content)
     })
-    .catch((err) => console.log(err))
+	
+    /*if(req.url === '/')
+    //não tem os conteudos do css e etc, era somente estático
+        fs.readFile(path.join(__dirname,'public','index.html'), (err,content)=>{
+            if(err) throw err
+
+            res.end(content)
+        })
+        
+}).listen(3000,()=>{
+    console.log('Testando...')
+})
+*/
+
+const http = require('http')
+const fs = require('fs')
+const path = require('path')
+
+http.createServer((req,res)=>{
+	
+    const file = (req.url === '/') ? 'index.html' : req.url
+    const pathFile = path.join(__dirname,'public',file)
+
+    const extname = path.extname(pathFile)
+    const allowedFileTypes = ['.html','.css','.js']
+    const allowed = allowedFileTypes.find(item => item == extname)
+    if(!allowed) return
+
+    fs.readFile(pathFile , (err,content)=>{
+        if(err) throw err
+
+        res.end(content)
+    })
+
+    
+}).listen(5000,()=>{
+    console.log('Servidor rodando...')
+})
