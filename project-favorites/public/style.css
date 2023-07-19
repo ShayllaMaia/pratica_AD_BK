@@ -1,25 +1,149 @@
-body {
-    background: linear-gradient(
-      180deg,
-      rgba(234, 238, 251, 0.50) 0%,
-      rgba(202, 213, 254, 0.56) 50%,
-      rgba(101, 132, 255, 0.60) 100%
-    );
-    position: relative;
-    min-height: 100vh;
-    height: 100%;
+body{
+  height: 100vh;
+}
+.container {
+  display: grid;
+  grid-gap: 1px;
+  grid-template-columns: 1fr; /* Only one column for mobile */
+}
+
+.texto {
+  display: grid;
+  grid-row: 4;
+  height: 1%;
+}
+
+.teste {
+  display: grid;
+  grid-template-columns: 1fr; /* Only one column for mobile */
+  grid-gap: 1px;
+}
+
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  z-index: 3;
+  margin-bottom: 20px;
+  height: 100px;
+  grid-column: 1;
+}
+
+input {
+  border: 3px solid rgb(121, 121, 121);
+  width: 100%; /* Full width for mobile */
+  border-radius: 20px;
+  padding: 10px;
+  grid-column: 1;
+}
+
+button {
+  border: none;
+  background-color: rgb(83, 68, 140);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 20px;
+  grid-column: 1;
+}
+
+button.remover {
+  background-color: brown;
+  margin-left: auto;
+  text-align: center;
+  margin-top: 0;
+  position: relative;
+  font-family: 'Inconsolata', monospace;
+  color: white;
+}
+
+button.editar {
+  align-items: center;
+  margin-left: auto;
+}
+
+ul {
+  text-align: center;
+  margin: 0 auto;
+  flex-shrink: 0;
+  border-radius: 20px;
+  background: rgba(142, 182, 255, 0.37);
+  flex-direction: column;
+  align-items: center;
+  list-style-type: square;
+  font-size: 30px;
+  font-family: 'Inconsolata', monospace;
+  height: 300px;
+  grid-column: 1;
+}
+
+li {
+  display: grid;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+#one {
+  height: 100px;
+}
+
+#two {
+  border-bottom: 1px solid rgba(256, 256, 256, .1);
+  height: 100px;
+}
+
+#three {
+  height: 100px;
+}
+
+#four {
+  height: 300px;
+}
+
+#six {
+  background-color: green;
+  height: 100px;
+}
+
+#seven {
+  background-color: magenta;
+  height: 100px;
+}
+
+.teste2 {
+  display: grid;
+}
+
+#height {
+  height: 100px;
+  grid-column: 1;
+  text-align: center;
+  background: rgba(202, 221, 254, 0.207);
+}
+
+@media only screen and (min-width: 470px) {
+  .container {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 1fr 1fr; 
+    
   }
   
-  h1 {
-    display: block;
-    text-align: center;
-    padding: 20px 0;
-    margin-top: 0;
-    position: relative;
-    font-family: 'Inconsolata', monospace;
-    background-color: rgb(83, 68, 140);
-    color: white;
+  .texto {
+    display: grid;
+    grid-row: 4;
+    height: 1%;
   }
+  
+  
+  .teste{
+    grid-template-columns: 20% 180%;
+    display: grid;
+    grid-gap: 1px;
+  }
+  
   
   form {
     display: flex;
@@ -28,15 +152,18 @@ body {
     position: relative;
     z-index: 3;
     margin-bottom: 20px; 
+    height: 100px;
+    grid-column: 1 / span 2;
   }
-
+  
   input{
-    border: 3px solid rgb(255, 255, 255);
+    border: 3px solid rgb(121, 121, 121);
     width: 30%;
     border-radius: 20px;
     padding: 10px;
+    grid-column: 1 / span 2;
   }
-
+  
   button {
     border: none;
     background-color: rgb(83, 68, 140);
@@ -46,38 +173,236 @@ body {
     cursor: pointer;
     margin: 20px;
     float: right;
+    grid-column: 1 / span 2;
   }
-
+  
   button.remover{
     background-color: brown;
     margin-left: auto;
-  }
 
+    text-align: center;
+    margin-top: 0;
+    position: relative;
+    font-family: 'Inconsolata', monospace;
+    color: white;
+  }
+  
   button.editar{
+    align-items: center;
     margin-left: auto;
   }
   
   
   ul {
-    padding: 80px;
+    text-align: center;
     margin: 0 auto;
-    width: 510px;
-    height: 350px;
+  
     flex-shrink: 0;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.37);
+    background: rgba(142, 182, 255, 0.37);
     flex-direction: column;
     align-items: center;
     list-style-type: square;
     font-size: 30px;
     font-family:'Inconsolata', monospace;
+    height: 300px;
+    grid-column: 1 / span 2;
   
     
   }
-
+  
   li {
-    display: flex;
+    display: grid;
     align-items: center;
     margin-bottom: 10px;
+  
+  }
+  
+  
+  #one {
+    height: 100px;
+    grid-column: 1 / span 1;
+  
+  }
+  
+  #two {
+    height: 100px;
+    grid-column: 2 / span 2;
+  }
+  
+  #three {
+    height: 100px;
+    grid-column: 1 / span 2;
+  }
+  
+  #four {
+    height: 300px;
+    grid-column: 1 / span 2;
+  }
+  
+  #six {
+    background-color: green;
+    height: 100px;
+    grid-column: 1 / span 1;
+  }
+  
+  #seven {
+    background-color: magenta;
+    height: 100px;
+    grid-column: 2 / span 1;
+  }
+  
+  .teste2{
+    display: inline;
+    
+  }
+  
+  
+  #height {
+    grid-column: 1 / span 2;
 
   }
+  
+}
+
+@media only screen and (min-width: 768px) {
+  .container {
+    display: grid;
+    grid-gap: 1px;
+    grid-template-columns: 1fr 1fr; 
+    
+  }
+  
+  .texto {
+    display: grid;
+    grid-row: 4;
+    height: 1%;
+  }
+  
+  
+  .teste{
+    grid-template-columns: 20% 180%;
+    display: grid;
+    grid-gap: 1px;
+  }
+  
+  
+  form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 3;
+    margin-bottom: 20px; 
+    height: 100px;
+    grid-column: 1 / span 2;
+  }
+  
+  input{
+    border: 3px solid rgb(121, 121, 121);
+    width: 30%;
+    border-radius: 20px;
+    padding: 10px;
+    grid-column: 1 / span 2;
+  }
+  
+  button {
+    border: none;
+    background-color: rgb(83, 68, 140);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin: 20px;
+    float: right;
+    grid-column: 1 / span 2;
+  }
+  
+  button.remover{
+    background-color: brown;
+    margin-left: auto;
+    text-align: center;
+    margin-top: 0;
+    position: relative;
+    font-family: 'Inconsolata', monospace;
+    color: white;
+  }
+  
+  button.editar{
+    align-items: center;
+    margin-left: auto;
+  }
+  
+  
+  ul {
+    text-align: center;
+    margin: 0 auto;
+  
+    flex-shrink: 0;
+    border-radius: 20px;
+    background: rgba(142, 182, 255, 0.37);
+    flex-direction: column;
+    align-items: center;
+    list-style-type: square;
+    font-size: 30px;
+    font-family:'Inconsolata', monospace;
+    height: 300px;
+    grid-column: 1 / span 2;
+  
+    
+  }
+  
+  li {
+    display: grid;
+    align-items: center;
+    margin-bottom: 10px;
+  
+  }
+  
+  
+  #one {
+    height: 100px;
+    grid-column: 1 / span 1;
+  
+  }
+  
+  #two {
+    height: 100px;
+    grid-column: 2 / span 2;
+  }
+  
+  #three {
+    height: 100px;
+    grid-column: 1 / span 2;
+  }
+  
+  #four {
+    height: 300px;
+    grid-column: 1 / span 2;
+  }
+  
+  #six {
+    background-color: green;
+    height: 100px;
+    grid-column: 1 / span 1;
+  }
+  
+  #seven {
+    background-color: magenta;
+    height: 100px;
+    grid-column: 2 / span 1;
+  }
+  
+  .teste2{
+    display: grid;
+    
+  }
+  
+  
+  #height {
+    height: 100px;
+    grid-column: 1 / span 2;
+    text-align: center;
+    background: rgba(202, 221, 254, 0.207);
+  }
+}
